@@ -1,7 +1,10 @@
 require "testya/version"
+require "testya/pack"
 
 module Testya
-  # Your code goes here...
+  def self.pack test_summary, &block
+    Pack.new( test_summary, &block )
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
