@@ -12,7 +12,7 @@ if __FILE__ == $PROGRAM_NAME
     instance_in_test = self
 
     assert "I'm a Testya::Pack, a package of tests.",
-      instance_in_test, :is_a?, Testya::Pack
+      instance_in_test, :instance_of?, Testya::Pack
 
     assert "I judge whether the given expression returns true.",
       0, :zero?
