@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'testya/version'
+require 'tescha/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "testya"
-  spec.version       = Testya::VERSION
+  spec.name          = "tescha"
+  spec.version       = Tescha::VERSION
   spec.authors       = ["Yamamoto Yuji"]
   spec.email         = ["whosekiteneverfly@gmail.com"]
   spec.summary       = %q{TODO: Write a short summary. Required.}

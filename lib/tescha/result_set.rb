@@ -1,4 +1,4 @@
-module Testya
+module Tescha
   class ResultSet
   end
 end

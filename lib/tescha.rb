@@ -1,18 +1,18 @@
-require "testya/version"
-require "testya/pack"
+require "tescha/version"
+require "tescha/pack"
 
-module Testya
+module Tescha
   def self.pack test_summary, &block
     Pack.new( test_summary, &block )
   end
 end
 
 if __FILE__ == $PROGRAM_NAME
-  pack = Testya.pack "Sample tests" do
+  pack = Tescha.pack "Sample tests" do
     instance_in_test = self
 
-    assert "I'm a Testya::Pack, a package of tests.",
-      instance_in_test, :instance_of?, Testya::Pack
+    assert "I'm a Tescha::Pack, a package of tests.",
+      instance_in_test, :instance_of?, Tescha::Pack
 
     assert "I judge whether the given expression returns true.",
       0, :zero?
@@ -30,7 +30,7 @@ if __FILE__ == $PROGRAM_NAME
       1, :between?, -1, 2
 
     sub_pack "in a sub package" do
-      assert "I'm just same as the Testya::Pack instance above.",
+      assert "I'm just same as the Tescha::Pack instance above.",
         self, :eql?, instance_in_test
 
       assert "Of course I can contain several assertions in a sub pack",
@@ -39,7 +39,7 @@ if __FILE__ == $PROGRAM_NAME
       sub_pack "in a nested sub package" do
         assert "I can contain nested sub packages",
           1, :==, 1
-        assert "I'm still just same as the Testya::Pack instance above.",
+        assert "I'm still just same as the Tescha::Pack instance above.",
           self, :eql?, instance_in_test
       end
     end

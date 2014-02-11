@@ -1,6 +1,6 @@
-require 'testya/result_set'
+require 'tescha/result_set'
 
-module Testya
+module Tescha
   class Pack
     def initialize test_summary, &block
       @test_summary = test_summary
@@ -11,7 +11,7 @@ module Testya
     end
     def judge_results
       # Fake implementation
-      Testya::ResultSet.new
+      Tescha::ResultSet.new
     end
   end
 end
@@ -19,11 +19,11 @@ end
 if __FILE__ == $PROGRAM_NAME
   this_file = File.readlines( __FILE__ )
 
-  instance_in_test = Testya::Pack.new 'description' do
+  instance_in_test = Tescha::Pack.new 'description' do
   end
 
   assertion_line = this_file[ __LINE__ ].sub( /if/, ''.freeze ).strip
-  if instance_in_test.judge_results.instance_of? Testya::ResultSet
+  if instance_in_test.judge_results.instance_of? Tescha::ResultSet
     puts 'OK'
   else
     fail "Assertion failed: '#{assertion_line}'"
