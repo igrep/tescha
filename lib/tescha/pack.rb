@@ -17,15 +17,15 @@ module Tescha
 end
 
 if __FILE__ == $PROGRAM_NAME
-  this_file = File.readlines( __FILE__ )
+  require 'tescha/meta_test'
 
   instance_in_test = Tescha::Pack.new 'An empty test pack' do
   end
 
-  assertion_line = this_file[ __LINE__ ].sub( /if/, ''.freeze ).strip
-  if instance_in_test.judge_results.instance_of? Tescha::ResultSet
-    puts 'OK'
-  else
-    fail "Assertion failed: '#{assertion_line}'"
-  end
+  puts "#judge_results"
+  Tescha::MetaTest.test(
+    "returns a Tescha::ResultSet",
+    ( actual = instance_in_test.judge_results ).instance_of?( expected = Tescha::ResultSet ),
+    "#{actual.inspect} is not a #{expected}"
+  )
 end
