@@ -29,4 +29,21 @@ if __FILE__ == $PROGRAM_NAME
     ( actual = instance_in_test.judge_results ).instance_of?( expected = Tescha::ResultSet ),
     "#{actual.inspect} is not a #{expected}"
   )
+
+  puts "#initialize"
+
+  pack = Tescha::Pack.new "test pack to test its test block's context" do
+    Tescha::MetaTest.test(
+      "the given block is evaluated in the context of the Tescha::Pack instance",
+      self.instance_of?( Tescha::Pack ),
+      "#{self.inspect} is not a Tescha::Pack"
+    )
+  end
+  pack.judge_results
+
+  Tescha::MetaTest.test(
+    "outside the block is NOT evaluated in the context of the Tescha::Pack instance",
+    ( self.to_s == 'main' ),
+    "#{self.inspect} is not main object"
+  )
 end
