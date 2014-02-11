@@ -2,9 +2,9 @@ require 'tescha/result_set'
 
 module Tescha
   class Pack
-    def initialize test_summary, &block
-      @test_summary = test_summary
-      @description_block = block
+    def initialize description, &block
+      @description = description
+      @test_block = block
     end
     def run_tests
       puts self.judge_results
