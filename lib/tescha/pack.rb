@@ -19,7 +19,7 @@ end
 if __FILE__ == $PROGRAM_NAME
   this_file = File.readlines( __FILE__ )
 
-  instance_in_test = Tescha::Pack.new 'description' do
+  instance_in_test = Tescha::Pack.new 'An empty test pack' do
   end
 
   assertion_line = this_file[ __LINE__ ].sub( /if/, ''.freeze ).strip
