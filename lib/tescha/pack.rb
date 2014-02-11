@@ -5,13 +5,14 @@ module Tescha
     def initialize description, &block
       @description = description
       @test_block = block
+      @test_results = []
     end
     def run_tests
       puts self.judge_results
     end
     def judge_results
-      # Fake implementation
-      Tescha::ResultSet.new
+      self.instance_eval( &@test_block )
+      Tescha::ResultSet.new @test_results
     end
   end
 end
