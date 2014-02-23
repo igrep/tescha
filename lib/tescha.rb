@@ -35,7 +35,7 @@ if __FILE__ == $PROGRAM_NAME
       assert 1, :between?, -1, 2
     end
 
-    sub_pack "in a sub package" do
+    subpack "in a sub package" do
       test "I'm just same as the Tescha::Pack instance above." do
         assert self, :eql?, instance_in_test
       end
@@ -44,7 +44,7 @@ if __FILE__ == $PROGRAM_NAME
         assert 0, :zero?
       end
 
-      sub_pack "in a nested sub package" do
+      subpack "in a nested sub package" do
         test "I can contain nested sub packages" do
           assert 1, :==, 1
         end
