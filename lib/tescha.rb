@@ -11,36 +11,46 @@ if __FILE__ == $PROGRAM_NAME
   pack = Tescha.pack "Sample tests" do
     instance_in_test = self
 
-    assert "I'm a Tescha::Pack, a package of tests.",
-      instance_in_test, :instance_of?, Tescha::Pack
+    test "I'm a Tescha::Pack, a package of tests." do
+      assert instance_in_test, :instance_of?, Tescha::Pack
+    end
 
-    assert "I judge whether the given expression returns true.",
-      0, :zero?
+    test "I judge whether the given expression returns true." do
+      assert 0, :zero?
+    end
 
-    assert "I judge whether the given expression returns a truthy.",
-      1, :nonzero? # 1.nonzero? returns 1, not true.
+    test "I judge whether the given expression returns a truthy." do
+      assert 1, :nonzero? # 1.nonzero? returns 1, not true.
+    end
 
-    assert_not "I judge whether the given expression returns false",
-      1, :zero?
+    test "I judge whether the given expression returns false" do
+      assert_not 1, :zero?
+    end
 
-    assert_not "I judge whether the given expression returns a falsy.",
-      [], :first
+    test "I judge whether the given expression returns a falsy." do
+      assert_not [], :first
+    end
 
-    assert "I can judge a method call with several arguments.",
-      1, :between?, -1, 2
+    test "I can judge a method call with several arguments." do
+      assert 1, :between?, -1, 2
+    end
 
     sub_pack "in a sub package" do
-      assert "I'm just same as the Tescha::Pack instance above.",
-        self, :eql?, instance_in_test
+      test "I'm just same as the Tescha::Pack instance above." do
+        assert self, :eql?, instance_in_test
+      end
 
-      assert "Of course I can contain several assertions in a sub pack",
-        0, :zero?
+      test "Of course I can contain several assertions in a sub pack" do
+        assert 0, :zero?
+      end
 
       sub_pack "in a nested sub package" do
-        assert "I can contain nested sub packages",
-          1, :==, 1
-        assert "I'm still just same as the Tescha::Pack instance above.",
-          self, :eql?, instance_in_test
+        test "I can contain nested sub packages" do
+          assert 1, :==, 1
+        end
+        test "I'm still just same as the Tescha::Pack instance above." do
+          assert self, :eql?, instance_in_test
+        end
       end
     end
 
