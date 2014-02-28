@@ -1,6 +1,6 @@
 module Tescha
   class ResultSet
-    def initialize results
+    def initialize
       @tests = []
       @assertions = []
       @failures = []
