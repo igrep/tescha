@@ -29,15 +29,15 @@ if __FILE__ == $PROGRAM_NAME
   instance_in_test = ResultSet.new
   instance_in_test.add(
     Test.new( 'test1', [
-      Assertions.new( 1, [ :==, 1 ] ),
-      Assertions.new( 1, [ :==, 0 ] ),
-      Assertions.new( '', [ :empty? ] ),
+      Assertions.new( 1, :==, [1] ),
+      Assertions.new( 1, :==, [0] ),
+      Assertions.new( '', :empty? ),
     ] )
   )
   instance_in_test.add(
     Test.new( 'test2', [
-      Assertions.new( 'foo', [ :==, 'bar' ] ),
-      Assertions.new( nil, [ :nil? ] ),
+      Assertions.new( 'foo', :==, ['bar'] ),
+      Assertions.new( nil, :nil? ),
     ] )
   )
 end
