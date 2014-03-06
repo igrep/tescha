@@ -19,19 +19,19 @@ if __FILE__ == $PROGRAM_NAME
   instance_in_test = ResultSet.new
 
   MetaTest.test(
-    "prints only the count of tests, assertions, and failed assertions.",
-    ( actual = instance_in_test.to_s ) == ( expected = "0 tests, 0 assertions, 0 failed assertions." ),
+    "  its summary returns the count of tests, assertions, and failed assertions.",
+    ( actual = instance_in_test.summary ) == ( expected = "0 tests, 0 assertions, 0 failed assertions." ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
-  puts 'A result set with some results'
+  puts 'A result set with one failure in each test'
   instance_in_test = ResultSet.new
   instance_in_test.add(
     Test.new( 'test1', [
       Assertions.new( 1, :==, [1] ),
-      Assertions.new( 1, :==, [0] ),
       Assertions.new( '', :empty? ),
+      Assertions.new( 'a', :empty? ),
     ] )
   )
   instance_in_test.add(
@@ -40,4 +40,26 @@ if __FILE__ == $PROGRAM_NAME
       Assertions.new( nil, :nil? ),
     ] )
   )
+
+  failure2 = "test1:\n" \
+    '  Assertion failed.' "\n" \
+    '  "a".empty? unexpectedly returned false.' "\n"
+  failure2 = "test2:\n" \
+    '  Assertion failed.' "\n" \
+    '  The expected value: "foo"' "\n" \
+    '  The actual value:   "bar"' "\n"
+  MetaTest.test(
+    "  generates each failure in detail",
+    ( actual = instance_in_test.each_result_message.to_a ) == ( expected = [failure1, failure2]),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  its summary returns the count of tests, assertions, and failed assertions.",
+    ( actual = instance_in_test.summary ) == ( expected = "2 tests, 5 assertions, 2 failed assertions." ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
 end
