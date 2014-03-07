@@ -29,15 +29,15 @@ if __FILE__ == $PROGRAM_NAME
   instance_in_test = ResultSet.new
   instance_in_test.add(
     Test.new( 'test1', [
-      Assertions.new( 1, :==, [1] ),
-      Assertions.new( '', :empty? ),
-      Assertions.new( 'a', :empty? ),
+      Assertion.new( 1, :==, [1] ),
+      Assertion.new( '', :empty? ),
+      Assertion.new( 'a', :empty? ),
     ] )
   )
   instance_in_test.add(
     Test.new( 'test2', [
-      Assertions.new( 'foo', :==, ['bar'] ),
-      Assertions.new( nil, :nil? ),
+      Assertion.new( 'foo', :==, ['bar'] ),
+      Assertion.new( nil, :nil? ),
     ] )
   )
 
@@ -50,7 +50,7 @@ if __FILE__ == $PROGRAM_NAME
     '  The actual value:   "bar"' "\n"
   MetaTest.test(
     "  generates each failure in detail",
-    ( actual = instance_in_test.each_result_message.to_a ) == ( expected = [failure1, failure2]),
+    ( actual = instance_in_test.each_result_message.to_a ) == ( expected = [failure1, failure2] ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
