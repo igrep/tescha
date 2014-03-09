@@ -41,20 +41,6 @@ if __FILE__ == $PROGRAM_NAME
     ] )
   )
 
-  failure2 = "test1:\n" \
-    '  Assertion failed.' "\n" \
-    '  "a".empty? unexpectedly returned false.' "\n"
-  failure2 = "test2:\n" \
-    '  Assertion failed.' "\n" \
-    '  The expected value: "foo"' "\n" \
-    '  The actual value:   "bar"' "\n"
-  MetaTest.test(
-    "  generates each failure in detail",
-    ( actual = instance_in_test.each_result_message.to_a ) == ( expected = [failure1, failure2] ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
   MetaTest.test(
     "  its summary returns the count of tests, assertions, and failed assertions.",
     ( actual = instance_in_test.summary ) == ( expected = "2 tests, 5 assertions, 2 failed assertions." ),
