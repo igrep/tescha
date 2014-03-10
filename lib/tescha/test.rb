@@ -64,12 +64,12 @@ if __FILE__ == $PROGRAM_NAME
   failure = "test1:\n" \
     '  Assertion failed.' "\n" \
     '  Expression "a".empty? unexpectedly returned false.' "\n"
-  MetaTest.test( 'it has one detailed failure message',
+  MetaTest.test( 'it has one detailed result message',
     ( actual = instance_in_test.result_messages ) == ( expected = [failure] ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
-  MetaTest.test( 'its result is failed',
+  MetaTest.test( 'its result is FAILED',
     ( actual = instance_in_test.result ) == ( expected = Test::FAILED ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
@@ -89,12 +89,12 @@ if __FILE__ == $PROGRAM_NAME
   failure2 = "test2:\n" \
     '  Assertion failed.' "\n" \
     '  Expected 0 is larger than or equals to 1.' "\n"
-  MetaTest.test( 'it has two detailed failure messages',
+  MetaTest.test( 'it has two detailed result messages',
     ( actual = instance_in_test.result_messages ) == ( expected = [failure1, failure2] ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
-  MetaTest.test( 'its result is failed',
+  MetaTest.test( 'its result is FAILED',
     ( actual = instance_in_test.result ) == ( expected = Test::FAILED ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
