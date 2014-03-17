@@ -1,19 +1,18 @@
 module Tescha
   class Assertion
 
+    attr_reader :result_message
+
     def initialize object, method_name, args = []
       @object = object
       @method_name = method_name
       @args = args
 
-      @result = object.__send__ method_name, *args
-
-      if @result
-      end
+      @successful = !!( object.__send__ method_name, *args )
     end
 
-    def to_s
-      @result_message
+    def successful?
+      @successful
     end
 
   end
