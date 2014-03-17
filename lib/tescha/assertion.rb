@@ -4,11 +4,13 @@ module Tescha
     attr_reader :result_message
 
     def initialize object, method_name, args = []
-      @object = object
-      @method_name = method_name
-      @args = args
-
-      @successful = !!( object.__send__ method_name, *args )
+      @result = object.__send__ method_name, *args
+      @successful = !!@result
+      @result_message =
+        unless @successful
+          "Assertion failed.\n" \
+            "The expression #{object.inspect}.#{method_name}(#{args.map( &:inspect ).join( ', ' )}) returned #@result!\n"
+        end
     end
 
     def successful?
@@ -54,8 +56,7 @@ if __FILE__ == $PROGRAM_NAME
       "The actual value:   #{actual.inspect}"
   )
   failure = 'Assertion failed.' "\n" \
-    'The expected value: :a' "\n" \
-    'The actual value:   :b' "\n"
+    'The expression :a.==(:b) returned false!' "\n"
   MetaTest.test( 'it has a detailed result message',
     ( actual = instance_in_test.result_message ) == ( expected = failure ),
       "The expected value: #{expected.inspect}\n" \
@@ -72,7 +73,7 @@ if __FILE__ == $PROGRAM_NAME
       "The actual value:   #{actual.inspect}"
   )
   failure = 'Assertion failed.' "\n" \
-    'The expression {}[:non_exisitng_key] returned nil!' "\n"
+    'The expression {}.[](:non_exisitng_key) returned nil!' "\n"
   MetaTest.test( 'it has a detailed result message',
     ( actual = instance_in_test.result_message ) == ( expected = failure ),
       "The expected value: #{expected.inspect}\n" \
