@@ -9,7 +9,7 @@ module Tescha
       @result_message =
         unless @successful
           "Assertion failed.\n" \
-            "The expression #{object.inspect}.#{method_name}(#{args.map( &:inspect ).join( ', ' )}) returned #@result!\n"
+            "The expression #{object.inspect}.#{method_name}(#{args.map( &:inspect ).join( ', ' )}) returned #{@result.inspect}!\n"
         end
     end
 
@@ -25,7 +25,7 @@ if __FILE__ == $PROGRAM_NAME
   include Tescha
 
   puts "given a expression returning true"
-  instance_in_test = Assertion.new 1, :==, 1
+  instance_in_test = Assertion.new 1, :==, [1]
   MetaTest.test( 'its result is successful',
     ( actual = instance_in_test.successful? ) == ( expected = true ),
       "The expected value: #{expected.inspect}\n" \
@@ -49,7 +49,7 @@ if __FILE__ == $PROGRAM_NAME
   )
 
   puts "given a expression returning false"
-  instance_in_test = Assertion.new :a, :==, :b
+  instance_in_test = Assertion.new :a, :==, [:b]
   MetaTest.test( 'its result is failed',
     ( actual = instance_in_test.successful? ) == ( expected = false ),
       "The expected value: #{expected.inspect}\n" \
@@ -64,9 +64,7 @@ if __FILE__ == $PROGRAM_NAME
   )
 
   puts "given a expression returning nil"
-  instance_in_test = Assertion.new {}, :[], :non_exisitng_key
-  MetaTest.test( 'it has a detailed result message',
-  )
+  instance_in_test = Assertion.new( {}, :[], [:non_exisitng_key] )
   MetaTest.test( 'its result is failed',
     ( actual = instance_in_test.successful? ) == ( expected = false ),
       "The expected value: #{expected.inspect}\n" \
