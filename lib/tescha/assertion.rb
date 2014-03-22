@@ -33,7 +33,7 @@ if __FILE__ == $PROGRAM_NAME
   )
   MetaTest.test( 'it does not have a result message',
     ( actual = instance_in_test.result_message ).nil?,
-      "The expected value: #{expected.inspect} is NOT nil"
+      "The actual value: #{actual.inspect} is NOT nil"
   )
 
   puts "given a expression returning a truthy value"
@@ -45,7 +45,7 @@ if __FILE__ == $PROGRAM_NAME
   )
   MetaTest.test( 'it does not have a result message',
     ( actual = instance_in_test.result_message ).nil?,
-      "The expected value: #{expected.inspect} is NOT nil"
+      "The actual value: #{actual.inspect} is NOT nil"
   )
 
   puts "given a expression returning false"
