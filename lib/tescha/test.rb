@@ -1,7 +1,27 @@
 module Tescha
   class Test
+
+    def initialize description
+      @description = description
+      @result_switch = ResultSwitch.new
+      @result_messages = []
+    end
+
+    def result_messages
+      if @result_messages.empty?
+        ["#@description:\nWARNING:  No assertion.\n"]
+      end
+    end
+
+    def result
+      @result_switch.final_result
+    end
+
   end
+
 end
+
+require 'tescha/test/result_switch'
 
 if __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
