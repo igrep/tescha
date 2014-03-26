@@ -10,7 +10,7 @@ if __FILE__ == $PROGRAM_NAME
   puts 'An empty test'
   instance_in_test = Test.new 'empty test'
   warning = "empty test:\n" \
-    '  WARNING:  No assertion.' "\n"
+    'WARNING:  No assertion.' "\n"
   MetaTest.test( 'it has one warning message',
     ( actual = instance_in_test.result_messages ) == ( expected = [warning] ),
       "The expected value: #{expected.inspect}\n" \
@@ -62,8 +62,8 @@ if __FILE__ == $PROGRAM_NAME
       Assertion.new( 'a', :empty? ),
     ] )
   failure = "test1:\n" \
-    '  Assertion failed.' "\n" \
-    '  Expression "a".empty? unexpectedly returned false.' "\n"
+    'Assertion failed.' "\n" \
+    'Th expression "a".empty? unexpectedly returned false.' "\n"
   MetaTest.test( 'it has one detailed result message',
     ( actual = instance_in_test.result_messages ) == ( expected = [failure] ),
       "The expected value: #{expected.inspect}\n" \
@@ -83,12 +83,11 @@ if __FILE__ == $PROGRAM_NAME
       Assertion.new( 0, :>=, 1 ),
     ] )
   failure1 = "test2:\n" \
-    '  Assertion failed.' "\n" \
-    '  The expected value: "foo"' "\n" \
-    '  The actual value:   "bar"' "\n"
+    'Assertion failed.' "\n" \
+    'The expression "foo".==("bar") returned false!' "\n"
   failure2 = "test2:\n" \
-    '  Assertion failed.' "\n" \
-    '  Expected 0 is larger than or equals to 1.' "\n"
+    'Assertion failed.' "\n" \
+    'The expression 0.>=(1) returned false!' "\n"
   MetaTest.test( 'it has two detailed result messages',
     ( actual = instance_in_test.result_messages ) == ( expected = [failure1, failure2] ),
       "The expected value: #{expected.inspect}\n" \
