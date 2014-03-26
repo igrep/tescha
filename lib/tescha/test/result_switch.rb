@@ -1,4 +1,7 @@
-require 'tescha/test'
+module Tescha
+  class Test
+  end
+end
 
 class Tescha::Test
   SKIPPED    = :skipped
