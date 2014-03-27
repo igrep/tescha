@@ -8,11 +8,11 @@ module Tescha
       @test_results = []
     end
     def run_tests
-      puts self.judge_results
+      puts self.judge_results.summary
     end
     def judge_results
       self.instance_eval( &@test_block )
-      Tescha::ResultSet.new @test_results
+      Tescha::ResultSet.new
     end
   end
 end
@@ -23,15 +23,14 @@ if __FILE__ == $PROGRAM_NAME
   instance_in_test = Tescha::Pack.new 'An empty test pack' do
   end
 
-  puts "#judge_results"
+  puts "\n---------------------------#judge_results"
   Tescha::MetaTest.test(
     "returns a Tescha::ResultSet",
     ( actual = instance_in_test.judge_results ).instance_of?( expected = Tescha::ResultSet ),
     "#{actual.inspect} is not a #{expected}"
   )
 
-  puts "#initialize"
-
+  puts "\n---------------------------#initialize"
   pack = Tescha::Pack.new "test pack to test its test block's context" do
     Tescha::MetaTest.test(
       "the given block is evaluated in the context of the Tescha::Pack instance",
