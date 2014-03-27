@@ -8,6 +8,10 @@ class Tescha::Test
       @state = INITIAL
     end
 
+    def initial?
+      @state == INITIAL
+    end
+
     def final_result
       @state.as_result
     end

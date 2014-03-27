@@ -12,8 +12,10 @@ module Tescha
     end
 
     def result_messages
-      if @result_messages.empty?
+      if @result_switch.initial?
         ["#@description:\nWARNING:  No assertion.\n"]
+      else
+        @result_messages
       end
     end
 
@@ -93,7 +95,7 @@ if __FILE__ == $PROGRAM_NAME
     ] )
   failure = "test1:\n" \
     'Assertion failed.' "\n" \
-    'Th expression "a".empty? unexpectedly returned false.' "\n"
+    'The expression "a".empty?() returned false!' "\n"
   MetaTest.test( 'it has one detailed result message',
     ( actual = instance_in_test.result_messages ) == ( expected = [failure] ),
       "The expected value: #{expected.inspect}\n" \
@@ -110,7 +112,7 @@ if __FILE__ == $PROGRAM_NAME
     Test.new( 'test2', [
       Assertion.new( 'foo', :==, ['bar'] ),
       Assertion.new( nil, :nil? ),
-      Assertion.new( 0, :>=, 1 ),
+      Assertion.new( 0, :>=, [1] ),
     ] )
   failure1 = "test2:\n" \
     'Assertion failed.' "\n" \
