@@ -1,10 +1,14 @@
 module Tescha
   class Test
 
-    def initialize description
+    def initialize description, actions = []
       @description = description
       @result_switch = ResultSwitch.new
       @result_messages = []
+
+      actions.each do|action|
+        self.append_result_of action
+      end
     end
 
     def result_messages
@@ -17,6 +21,11 @@ module Tescha
       @result_switch.final_result
     end
 
+    def append_result_of action
+      @result_switch.send action.as_result
+      @result_messages << "#@description:\n#{action.result_message}" if action.result_message
+    end
+
   end
 
 end
@@ -25,6 +34,7 @@ require 'tescha/test/result_switch'
 
 if __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
+  require 'tescha/assertion'
   include Tescha
 
   puts 'An empty test'
