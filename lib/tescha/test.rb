@@ -9,7 +9,7 @@ module Tescha
 
     def result_messages
       if @result_switch.initial?
-        ["#@description:\nWARNING:  No assertion.\n"]
+        ["#@description:\nWARNING: No assertions.\n"]
       else
         @result_messages
       end
@@ -38,7 +38,7 @@ if __FILE__ == $PROGRAM_NAME
   puts 'An empty test'
   instance_in_test = Test.new 'empty test'
   warning = "empty test:\n" \
-    'WARNING:  No assertion.' "\n"
+    'WARNING: No assertions.' "\n"
   MetaTest.test( 'it has one warning message',
     ( actual = instance_in_test.result_messages ) == ( expected = [warning] ),
       "The expected value: #{expected.inspect}\n" \
