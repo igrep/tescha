@@ -1,13 +1,6 @@
-module Tescha
-  class Test
-  end
-end
+require 'tescha/test/constants'
 
 class Tescha::Test
-  SKIPPED    = :skipped
-  SUCCESSFUL = :successful
-  FAILED     = :failed
-
   class ResultSwitch
     attr_reader :state
 
