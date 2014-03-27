@@ -19,28 +19,29 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
+  include Tescha
 
-  instance_in_test = Tescha::Pack.new 'An empty test pack' do
+  instance_in_test = Pack.new 'An empty test pack' do
   end
 
   puts "\n---------------------------#judge_results"
-  Tescha::MetaTest.test(
+  MetaTest.test(
     "returns a Tescha::ResultSet",
-    ( actual = instance_in_test.judge_results ).instance_of?( expected = Tescha::ResultSet ),
-    "#{actual.inspect} is not a #{expected}"
+    ( actual = instance_in_test.judge_results ).instance_of?( ResultSet ),
+    "#{actual.inspect} is not a Tescha::ResultSet"
   )
 
   puts "\n---------------------------#initialize"
-  pack = Tescha::Pack.new "test pack to test its test block's context" do
-    Tescha::MetaTest.test(
+  pack = Pack.new "test pack to test its test block's context" do
+    MetaTest.test(
       "the given block is evaluated in the context of the Tescha::Pack instance",
-      self.instance_of?( Tescha::Pack ),
+      self.instance_of?( Pack ),
       "#{self.inspect} is not a Tescha::Pack"
     )
   end
   pack.judge_results
 
-  Tescha::MetaTest.test(
+  MetaTest.test(
     "outside the block is NOT evaluated in the context of the Tescha::Pack instance",
     ( self.to_s == 'main' ),
     "#{self.inspect} is not main object"
