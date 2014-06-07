@@ -1,18 +1,22 @@
-require 'tescha/result_set'
+require 'tescha/result_lister'
 
 module Tescha
   class Pack
     def initialize description, &block
       @description = description
       @test_block = block
-      @test_results = []
+      @result_lister = Tescha::ResultLister.new
     end
-    def run_tests
-      puts self.judge_results.summary
+    def run_tests opts
+      run_tests! opts.clone
+    end
+    def run_tests! opts
+      output = opts.delete :output
+      output.puts self.judge_results.summary
     end
     def judge_results
       self.instance_eval( &@test_block )
-      Tescha::ResultSet.new
+      @result_lister
     end
   end
 end
@@ -26,9 +30,9 @@ if __FILE__ == $PROGRAM_NAME
 
   puts "\n---------------------------#judge_results"
   MetaTest.test(
-    "returns a Tescha::ResultSet",
-    ( actual = instance_in_test.judge_results ).instance_of?( ResultSet ),
-    "#{actual.inspect} is not a Tescha::ResultSet"
+    "returns a Tescha::ResultLister",
+    ( actual = instance_in_test.judge_results ).instance_of?( ResultLister ),
+    "#{actual.inspect} is not a Tescha::ResultLister"
   )
 
   puts "\n---------------------------#initialize"
@@ -46,4 +50,12 @@ if __FILE__ == $PROGRAM_NAME
     ( self.to_s == 'main' ),
     "#{self.inspect} is not main object"
   )
+
+  puts "\n---------------------------#test"
+
+  instance_in_test = Pack.new 'A test pack with an empty test' do
+    test 'An empty test' do
+    end
+  end
+
 end

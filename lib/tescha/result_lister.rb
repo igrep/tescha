@@ -1,7 +1,7 @@
 require 'tescha/test/constants'
 
 module Tescha
-  class ResultSet
+  class ResultLister
     attr_reader :last_result
     def initialize
       @last_result = nil
@@ -32,7 +32,7 @@ if __FILE__ == $PROGRAM_NAME
   puts "\n---------------------------#initialize"
 
   puts 'An empty result set'
-  instance_in_test = ResultSet.new
+  instance_in_test = ResultLister.new
 
   MetaTest.test(
     "  its summary_message returns the count of tests and failed tests.",
@@ -65,7 +65,7 @@ if __FILE__ == $PROGRAM_NAME
   failed_test2 = Test.new 'second failed test in append_test'
   failed_test2.append_result_of Assertion.new 0, :nil?
 
-  instance_in_test = ResultSet.new
+  instance_in_test = ResultLister.new
   instance_in_test.append_test successful_test
   instance_in_test.append_test failed_test1
   instance_in_test.append_test failed_test2
@@ -100,7 +100,7 @@ if __FILE__ == $PROGRAM_NAME
   successful_test2 = Test.new 'second successful test in append_test'
   successful_test2.append_result_of Assertion.new nil, :nil?
 
-  instance_in_test = ResultSet.new
+  instance_in_test = ResultLister.new
   instance_in_test.append_test successful_test1
   instance_in_test.append_test successful_test2
 
