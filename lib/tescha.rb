@@ -1,18 +1,18 @@
 require "tescha/version"
-require "tescha/pack"
+require "tescha/set"
 
 module Tescha
-  def self.pack test_summary, &block
-    Pack.new( test_summary, &block )
+  def self.set test_summary, &block
+    Set.new( test_summary, &block )
   end
 end
 
 if __FILE__ == $PROGRAM_NAME
-  pack = Tescha.pack "Sample tests" do
+  set = Tescha.set "Sample tests" do
     instance_in_test = self
 
-    test "I'm a Tescha::Pack, a package of tests." do
-      assert instance_in_test, :instance_of?, Tescha::Pack
+    test "I'm a Tescha::set, a set of tests." do
+      assert instance_in_test, :instance_of?, Tescha::set
     end
 
     test "I judge whether the given expression returns true." do
@@ -35,20 +35,20 @@ if __FILE__ == $PROGRAM_NAME
       assert 1, :between?, -1, 2
     end
 
-    subpack "in a sub package" do
-      test "I'm just same as the Tescha::Pack instance above." do
+    subset "in a subset" do
+      test "I'm just same as the Tescha::Set instance above." do
         assert self, :eql?, instance_in_test
       end
 
-      test "Of course I can contain several assertions in a sub pack" do
+      test "Of course I can contain several assertions in a subset" do
         assert 0, :zero?
       end
 
-      subpack "in a nested sub package" do
-        test "I can contain nested sub packages" do
+      subset "in a nested subset" do
+        test "I can contain nested subset" do
           assert 1, :==, 1
         end
-        test "I'm still just same as the Tescha::Pack instance above." do
+        test "I'm still just same as the Tescha::Set instance above." do
           assert self, :eql?, instance_in_test
         end
       end
@@ -56,5 +56,5 @@ if __FILE__ == $PROGRAM_NAME
 
   end
 
-  pack.run_tests
+  set.run_tests
 end

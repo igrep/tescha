@@ -1,7 +1,7 @@
 require 'tescha/result_lister'
 
 module Tescha
-  class Pack
+  class Set
     def initialize description, &block
       @description = description
       @test_block = block
@@ -25,7 +25,7 @@ if __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
   include Tescha
 
-  instance_in_test = Pack.new 'An empty test pack' do
+  instance_in_test = Tescha::Set.new 'An empty test set' do
   end
 
   puts "\n---------------------------#judge_results"
@@ -36,24 +36,24 @@ if __FILE__ == $PROGRAM_NAME
   )
 
   puts "\n---------------------------#initialize"
-  pack = Pack.new "test pack to test its test block's context" do
+  set = Tescha::Set.new "test set to test its test block's context" do
     MetaTest.test(
-      "the given block is evaluated in the context of the Tescha::Pack instance",
-      self.instance_of?( Pack ),
-      "#{self.inspect} is not a Tescha::Pack"
+      "the given block is evaluated in the context of the Tescha::Set instance",
+      self.instance_of?( Tescha::Set ),
+      "#{self.inspect} is not a Tescha::Set"
     )
   end
-  pack.judge_results
+  set.judge_results
 
   MetaTest.test(
-    "outside the block is NOT evaluated in the context of the Tescha::Pack instance",
+    "outside the block is NOT evaluated in the context of the Tescha::Set instance",
     ( self.to_s == 'main' ),
     "#{self.inspect} is not main object"
   )
 
   puts "\n---------------------------#test"
 
-  instance_in_test = Pack.new 'A test pack with an empty test' do
+  instance_in_test = Tescha::Set.new 'A test set with an empty test' do
     test 'An empty test' do
     end
   end
