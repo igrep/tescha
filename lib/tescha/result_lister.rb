@@ -31,7 +31,7 @@ if __FILE__ == $PROGRAM_NAME
 
   puts "\n---------------------------#initialize"
 
-  puts 'An empty result set'
+  puts 'An initial result lister'
   instance_in_test = ResultLister.new
 
   MetaTest.test(
