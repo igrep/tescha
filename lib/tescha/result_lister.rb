@@ -19,6 +19,13 @@ module Tescha
       @tests << test
       @failures << test unless test.result == Test::SUCCESSFUL
     end
+    def last_result_sign_in_progress
+      case @last_result
+      when Test::SUCCESSFUL then '.'
+      when Test::FAILED     then 'F'
+      else nil
+      end
+    end
   end
 end
 
@@ -50,6 +57,12 @@ if __FILE__ == $PROGRAM_NAME
   MetaTest.test(
     "  its last_result is nil.",
     ( actual = instance_in_test.last_result ).nil?,
+      "The actual value: #{actual.inspect} is not nil."
+  )
+
+  MetaTest.test(
+    "  its last_result_sign_in_progress is nil.",
+    ( actual = instance_in_test.last_result_sign_in_progress ).nil?,
       "The actual value: #{actual.inspect} is not nil."
   )
 
@@ -92,6 +105,13 @@ if __FILE__ == $PROGRAM_NAME
       "The actual value:   #{actual.inspect}"
   )
 
+  MetaTest.test(
+    "  its last_result_sign_in_progress is 'F'.",
+    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = 'F' ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
   puts "\n-------------------------------------------"
   puts 'given some tests with successful assertions.'
 
@@ -120,6 +140,13 @@ if __FILE__ == $PROGRAM_NAME
   MetaTest.test(
     "  its last_result is SUCCESSFUL.",
     ( actual = instance_in_test.last_result ) == ( expected = Test::SUCCESSFUL ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  its last_result_sign_in_progress is '.'.",
+    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = '.' ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
