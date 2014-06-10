@@ -7,22 +7,31 @@ module Tescha
       @last_result = nil
       @tests = []
       @failures = []
+      @skips = []
     end
     def summary_message
-      "#{@tests.length} tests, #{@failures.length} failures."
+      message = "#{@tests.length} tests, #{@failures.length} failures"
+      message << ", #{@skips.length} skipped" unless @skips.empty?
+      message << '.'
     end
     def result_messages
-      @failures.flat_map(&:result_messages)
+      @failures.flat_map(&:result_messages).concat @skips.flat_map(&:result_messages)
     end
     def append_test test
       @last_result = test.result
       @tests << test
-      @failures << test unless test.result == Test::SUCCESSFUL
+      case test.result
+      when Test::FAILED
+        @failures << test
+      when Test::SKIPPED
+        @skips << test
+      end
     end
     def last_result_sign_in_progress
       case @last_result
       when Test::SUCCESSFUL then '.'
       when Test::FAILED     then 'F'
+      when Test::SKIPPED    then '*'
       else nil
       end
     end
@@ -108,6 +117,51 @@ if __FILE__ == $PROGRAM_NAME
   MetaTest.test(
     "  its last_result_sign_in_progress is 'F'.",
     ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = 'F' ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  puts "\n-------------------------------------------"
+  puts 'given some tests with successful assertions and skipped tests.'
+
+  successful_test1 = Test.new 'first successful test in append_test'
+  successful_test1.append_result_of Assertion.new nil, :nil?
+  successful_test2 = Test.new 'second successful test in append_test'
+  successful_test2.append_result_of Assertion.new nil, :nil?
+  skipped_test1 = Test.new 'first skipped test in append_test'
+  skipped_test2 = Test.new 'second skipped test in append_test'
+
+  instance_in_test = ResultLister.new
+  instance_in_test.append_test successful_test1
+  instance_in_test.append_test successful_test2
+  instance_in_test.append_test skipped_test1
+  instance_in_test.append_test skipped_test2
+
+  MetaTest.test(
+    "  its summary_message returns the count of tests and skipped tests.",
+    ( actual = instance_in_test.summary_message ) == ( expected = "4 tests, 0 failures, 2 skipped." ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  its result_messages returns skipped tests' result_messages.",
+    ( actual = instance_in_test.result_messages ) ==
+      ( expected = skipped_test1.result_messages + skipped_test2.result_messages ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  its last_result is SKIPPED.",
+    ( actual = instance_in_test.last_result ) == ( expected = Test::SKIPPED ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  its last_result_sign_in_progress is '*'.",
+    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = '*' ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
