@@ -9,7 +9,7 @@ module Tescha
       @failures = []
       @skips = []
     end
-    def summary_message
+    def statistical_message
       message = "#{@tests.length} tests, #{@failures.length} failures"
       message << ", #{@skips.length} skipped" unless @skips.empty?
       message << '.'
@@ -51,8 +51,8 @@ if __FILE__ == $PROGRAM_NAME
   instance_in_test = ResultLister.new
 
   MetaTest.test(
-    "  its summary_message returns the count of tests and failed tests.",
-    ( actual = instance_in_test.summary_message ) == ( expected = "0 tests, 0 failures." ),
+    "  its statistical_message returns the count of tests and failed tests.",
+    ( actual = instance_in_test.statistical_message ) == ( expected = "0 tests, 0 failures." ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
@@ -93,8 +93,8 @@ if __FILE__ == $PROGRAM_NAME
   instance_in_test.append_test failed_test2
 
   MetaTest.test(
-    "  its summary_message returns the count of tests and failed tests.",
-    ( actual = instance_in_test.summary_message ) == ( expected = "3 tests, 2 failures." ),
+    "  its statistical_message returns the count of tests and failed tests.",
+    ( actual = instance_in_test.statistical_message ) == ( expected = "3 tests, 2 failures." ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
@@ -138,8 +138,8 @@ if __FILE__ == $PROGRAM_NAME
   instance_in_test.append_test skipped_test2
 
   MetaTest.test(
-    "  its summary_message returns the count of tests and skipped tests.",
-    ( actual = instance_in_test.summary_message ) == ( expected = "4 tests, 0 failures, 2 skipped." ),
+    "  its statistical_message returns the count of tests and skipped tests.",
+    ( actual = instance_in_test.statistical_message ) == ( expected = "4 tests, 0 failures, 2 skipped." ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
@@ -179,8 +179,8 @@ if __FILE__ == $PROGRAM_NAME
   instance_in_test.append_test successful_test2
 
   MetaTest.test(
-    "  its summary_message returns the count of tests",
-    ( actual = instance_in_test.summary_message ) == ( expected = "2 tests, 0 failures." ),
+    "  its statistical_message returns the count of tests",
+    ( actual = instance_in_test.statistical_message ) == ( expected = "2 tests, 0 failures." ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
