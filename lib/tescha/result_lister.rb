@@ -29,9 +29,9 @@ module Tescha
     end
     def last_result_sign_in_progress
       case @last_result
-      when Test::SUCCESSFUL then '.'
-      when Test::FAILED     then 'F'
-      when Test::SKIPPED    then '*'
+      when Test::SUCCESSFUL then '.'.freeze
+      when Test::FAILED     then 'F'.freeze
+      when Test::SKIPPED    then '*'.freeze
       else nil
       end
     end
