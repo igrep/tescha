@@ -6,6 +6,7 @@ module Tescha
     class << self
       def execute argv
         options = parse_argv! argv
+        append_rubylib_to ENV
         argv.each do|test_file_path|
           system(
             *(
@@ -38,6 +39,22 @@ module Tescha
         parser.parse! argv
         options
       end
+
+      private
+
+        def __dir__
+          File.dirname(File.expand_path(__FILE__))
+        end unless respond_to? __dir__
+
+        def append_rubylib_to env
+          rubylib = 'RUBYLIB'.freeze
+          if env[rubylib]
+            env[rubylib] += "#{File::PATH_SEPARATOR}#{__dir__}"
+          else
+            env[rubylib] = __dir__
+          end
+        end
+
     end
 
   end
