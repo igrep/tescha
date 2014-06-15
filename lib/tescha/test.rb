@@ -1,3 +1,5 @@
+require 'tescha/readiness'
+
 module Tescha
   class Test
 
@@ -30,7 +32,7 @@ end
 
 require 'tescha/test/result_switch'
 
-if __FILE__ == $PROGRAM_NAME
+if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
   require 'tescha/assertion'
   include Tescha

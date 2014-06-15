@@ -1,3 +1,4 @@
+require 'tescha/readiness'
 require 'tescha/test/constants'
 
 class Tescha::Test
@@ -54,7 +55,7 @@ class Tescha::Test
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
+if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
   include Tescha
 

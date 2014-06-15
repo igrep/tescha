@@ -1,3 +1,4 @@
+require 'tescha/readiness'
 require 'tescha/result_lister'
 
 module Tescha
@@ -21,7 +22,7 @@ module Tescha
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
+if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
   include Tescha
 
