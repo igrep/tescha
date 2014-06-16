@@ -9,7 +9,7 @@ module Tescha
 
         parse_argv! argv
         argv.each do|test_file_path|
-          load test_file_path
+          load_no_reloading test_file_path
         end
       end
 
@@ -24,6 +24,10 @@ module Tescha
 
         parser.parse! argv
         options
+      end
+
+      def load_no_reloading path
+        require File.expand_path path.sub(/\.rb$/, ''.freeze)
       end
 
     end
