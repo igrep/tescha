@@ -34,3 +34,11 @@ module Tescha
 
   end
 end
+
+if __FILE__ == $PROGRAM_NAME
+  require 'tescha/meta_test'
+  require 'tmpdir'
+
+  Dir.mktmpdir do|dir|
+  end
+end
