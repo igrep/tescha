@@ -37,8 +37,11 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
-  require 'tmpdir'
 
-  Dir.mktmpdir do|dir|
+  project_root = File.join File.dirname(__FILE__), '../..'
+  tescha_command = File.expand_path File.join(project_root, 'bin/tescha')
+  fixtures_directory = File.join(project_root, 'test/tescha/command/fixtures')
+  Dir.chdir fixtures_directory do
+    p system('ruby', tescha_command) # check if executable
   end
 end
