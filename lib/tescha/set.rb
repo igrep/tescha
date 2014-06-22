@@ -9,7 +9,7 @@ module Tescha
       @result_lister = Tescha::ResultLister.new
     end
     def run_tests opts
-      run_tests! opts.clone
+      run_tests! opts.dup
     end
     def run_tests! opts
       output = opts.delete :output
