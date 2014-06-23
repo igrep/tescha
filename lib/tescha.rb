@@ -11,8 +11,8 @@ if __FILE__ == $PROGRAM_NAME
   set = Tescha.set "Sample tests" do
     instance_in_test = self
 
-    test "I'm a Tescha::set, a set of tests." do
-      assert instance_in_test, :instance_of?, Tescha::set
+    test "I'm a Tescha::Set, a set of tests." do
+      assert instance_in_test, :instance_of?, Tescha::Set
     end
 
     test "I judge whether the given expression returns true." do
