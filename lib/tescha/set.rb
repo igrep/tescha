@@ -1,5 +1,7 @@
 require 'tescha/readiness'
 require 'tescha/result_lister'
+require 'tescha/test'
+require 'tescha/assertion'
 
 module Tescha
   class Set
@@ -8,31 +10,47 @@ module Tescha
       @test_block = block
       @result_lister = Tescha::ResultLister.new
     end
-    def run_tests opts
+    def run_tests opts = {}
       run_tests! opts.dup
     end
-    def run_tests! opts
-      output = opts.delete :output
-      output.puts self.judge_results.summary
-    end
-    def judge_results
+    def run_tests! opts = {}
+      @output = opts.delete(:output) || $stdout
+
       self.instance_eval( &@test_block )
+      @result_lister.result_messages.each do|message|
+        @output.write message
+      end
       @result_lister
     end
+
+    def test description, &block
+      @current_test = Tescha::Test.new description
+      block.call
+      @result_lister.append_test @current_test
+      @output.write @result_lister.last_result_sign_in_progress
+    ensure
+      @current_test = nil
+    end
+
+    def assert object, method, *args
+      @current_test.append_result_of Tescha::Assertion.new(object, method, args)
+    end
+
   end
 end
 
 if Tescha.ready? || __FILE__ == $PROGRAM_NAME
+  require 'stringio'
   require 'tescha/meta_test'
   include Tescha
 
   instance_in_test = Tescha::Set.new 'An empty test set' do
   end
 
-  puts "\n---------------------------#judge_results"
+  puts "\n---------------------------#run_tests"
   MetaTest.test(
     "returns a Tescha::ResultLister",
-    ( actual = instance_in_test.judge_results ).instance_of?( ResultLister ),
+    ( actual = instance_in_test.run_tests ).instance_of?( ResultLister ),
     "#{actual.inspect} is not a Tescha::ResultLister"
   )
 
@@ -44,7 +62,7 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
       "#{self.inspect} is not a Tescha::Set"
     )
   end
-  set.judge_results
+  set.run_tests(output: StringIO.new) 
 
   MetaTest.test(
     "outside the block is NOT evaluated in the context of the Tescha::Set instance",
