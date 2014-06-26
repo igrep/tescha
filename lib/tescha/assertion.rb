@@ -1,21 +1,9 @@
 require 'tescha/readiness'
-require 'tescha/test/constants'
+require 'tescha/assertion/base'
 
-module Tescha
-  class Assertion
-
-    attr_reader :result_message, :as_result
-
-    def initialize object, method_name, args = []
-      result = object.__send__ method_name, *args
-      @as_result = result ? Test::SUCCESSFUL : Test::FAILED
-      @result_message =
-        unless result
-          "Assertion failed.\n" \
-            "The expression #{object.inspect}.#{method_name}(#{args.map( &:inspect ).join( ', ' )}) returned #{result.inspect}!\n"
-        end
-    end
-
+module Tescha::Assertion
+  def self.new *args
+    ::Tescha::Assertion::Positive.new(*args)
   end
 end
 
