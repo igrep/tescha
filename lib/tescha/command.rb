@@ -1,5 +1,4 @@
 require 'optparse'
-require 'shellwords'
 require 'find'
 
 module Tescha
