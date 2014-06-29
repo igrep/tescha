@@ -1,5 +1,5 @@
 require 'tescha/readiness'
-require 'tescha/assertion/base'
+require 'tescha/assertion/positive'
 
 module Tescha::Assertion
   def self.new *args
