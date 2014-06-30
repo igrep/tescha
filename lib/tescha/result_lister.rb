@@ -42,7 +42,7 @@ end
 if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
   require 'tescha/test'
-  require 'tescha/assertion'
+  require 'tescha/assertion/positive'
   require 'pp'
   include Tescha
 
@@ -80,13 +80,13 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   puts 'given some tests with assertions including failed ones.'
 
   successful_test = Test.new 'a successful test in append_test'
-  successful_test.append_result_of Assertion.new nil, :nil?
+  successful_test.append_result_of Assertion::Positive.new nil, :nil?
 
   failed_test1 = Test.new 'first failed test in append_test'
-  failed_test1.append_result_of Assertion.new 0, :nil?
+  failed_test1.append_result_of Assertion::Positive.new 0, :nil?
 
   failed_test2 = Test.new 'second failed test in append_test'
-  failed_test2.append_result_of Assertion.new 0, :nil?
+  failed_test2.append_result_of Assertion::Positive.new 0, :nil?
 
   instance_in_test = ResultLister.new
   instance_in_test.append_test successful_test
@@ -126,9 +126,9 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   puts 'given some tests with successful assertions and skipped tests.'
 
   successful_test1 = Test.new 'first successful test in append_test'
-  successful_test1.append_result_of Assertion.new nil, :nil?
+  successful_test1.append_result_of Assertion::Positive.new nil, :nil?
   successful_test2 = Test.new 'second successful test in append_test'
-  successful_test2.append_result_of Assertion.new nil, :nil?
+  successful_test2.append_result_of Assertion::Positive.new nil, :nil?
   skipped_test1 = Test.new 'first skipped test in append_test'
   skipped_test2 = Test.new 'second skipped test in append_test'
 
@@ -171,9 +171,9 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   puts 'given some tests with successful assertions.'
 
   successful_test1 = Test.new 'first successful test in append_test'
-  successful_test1.append_result_of Assertion.new nil, :nil?
+  successful_test1.append_result_of Assertion::Positive.new nil, :nil?
   successful_test2 = Test.new 'second successful test in append_test'
-  successful_test2.append_result_of Assertion.new nil, :nil?
+  successful_test2.append_result_of Assertion::Positive.new nil, :nil?
 
   instance_in_test = ResultLister.new
   instance_in_test.append_test successful_test1

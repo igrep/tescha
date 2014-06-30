@@ -1,7 +1,7 @@
 require 'tescha/readiness'
 require 'tescha/result_lister'
 require 'tescha/test'
-require 'tescha/assertion'
+require 'tescha/assertion/positive'
 
 module Tescha
   class Set
@@ -33,7 +33,7 @@ module Tescha
     end
 
     def assert object, method, *args
-      @current_test.append_result_of Tescha::Assertion.new(object, method, args)
+      @current_test.append_result_of Tescha::Assertion::Positive.new(object, method, args)
     end
 
   end

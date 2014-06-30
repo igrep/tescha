@@ -34,7 +34,7 @@ require 'tescha/test/result_switch'
 
 if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
-  require 'tescha/assertion'
+  require 'tescha/assertion/positive'
   include Tescha
 
   puts 'An empty test'
@@ -54,7 +54,7 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
 
   puts "A test with one successful test"
   instance_in_test = Test.new 'successfull1'
-  instance_in_test.append_result_of Assertion.new( [], :empty? )
+  instance_in_test.append_result_of Assertion::Positive.new( [], :empty? )
   MetaTest.test( 'it has no failure message',
     ( actual = instance_in_test.result_messages ).empty?,
     "The actual value: #{actual.inspect} is NOT empty!"
@@ -67,9 +67,9 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
 
   puts "A test with all successful tests"
   instance_in_test = Test.new 'successfull2'
-  instance_in_test.append_result_of Assertion.new( 'Foo', :==, ['Foo'] )
-  instance_in_test.append_result_of Assertion.new( -1, :<, 0 )
-  instance_in_test.append_result_of Assertion.new( [1, 2], :include?, 2 )
+  instance_in_test.append_result_of Assertion::Positive.new( 'Foo', :==, ['Foo'] )
+  instance_in_test.append_result_of Assertion::Positive.new( -1, :<, 0 )
+  instance_in_test.append_result_of Assertion::Positive.new( [1, 2], :include?, 2 )
   MetaTest.test( 'it has no failure message',
     ( actual = instance_in_test.result_messages ).empty?,
     "The actual value: #{actual.inspect} is NOT empty!"
@@ -82,9 +82,9 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
 
   puts "A test with a failure"
   instance_in_test = Test.new 'test1'
-  instance_in_test.append_result_of Assertion.new( 1, :==, [1] )
-  instance_in_test.append_result_of Assertion.new( '', :empty? )
-  instance_in_test.append_result_of Assertion.new( 'a', :empty? )
+  instance_in_test.append_result_of Assertion::Positive.new( 1, :==, [1] )
+  instance_in_test.append_result_of Assertion::Positive.new( '', :empty? )
+  instance_in_test.append_result_of Assertion::Positive.new( 'a', :empty? )
   failure = "test1:\n" \
     'Assertion failed.' "\n" \
     'The expression "a".empty?() returned false!' "\n"
@@ -101,9 +101,9 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
 
   puts "A test with two failures"
   instance_in_test = Test.new 'test2'
-  instance_in_test.append_result_of Assertion.new( 'foo', :==, ['bar'] )
-  instance_in_test.append_result_of Assertion.new( nil, :nil? )
-  instance_in_test.append_result_of Assertion.new( 0, :>=, [1] )
+  instance_in_test.append_result_of Assertion::Positive.new( 'foo', :==, ['bar'] )
+  instance_in_test.append_result_of Assertion::Positive.new( nil, :nil? )
+  instance_in_test.append_result_of Assertion::Positive.new( 0, :>=, [1] )
   failure1 = "test2:\n" \
     'Assertion failed.' "\n" \
     'The expression "foo".==("bar") returned false!' "\n"
