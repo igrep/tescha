@@ -7,9 +7,10 @@ module Tescha
 
       def initialize object, method_name, args = []
         result = object.__send__ method_name, *args
-        @as_result = successful?(result) ? Test::SUCCESSFUL : Test::FAILED
+        successful = successful?(result)
+        @as_result = successful ? Test::SUCCESSFUL : Test::FAILED
         @result_message =
-          unless result
+          unless successful
             "Assertion failed.\n" \
               "The expression #{object.inspect}.#{method_name}(#{args.map( &:inspect ).join( ', ' )}) returned #{result.inspect}!\n"
           end
