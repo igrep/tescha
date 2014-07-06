@@ -31,6 +31,10 @@ if __FILE__ == $PROGRAM_NAME
       assert_not [], :first
     end
 
+    test "I judge whether the given expression returns nil." do
+      assert_nil [], :first
+    end
+
     test "I can judge a method call with several arguments." do
       assert 1, :between?, -1, 2
     end
