@@ -17,6 +17,7 @@ if __FILE__ == $PROGRAM_NAME
 
     test "I judge whether the given expression returns true." do
       assert 0, :zero?
+      assert_true 0, :zero?
     end
 
     test "I judge whether the given expression returns a truthy." do
