@@ -3,6 +3,7 @@ require 'tescha/result_lister'
 require 'tescha/test'
 require 'tescha/assertion/positive'
 require 'tescha/assertion/negative'
+require 'tescha/assertion/nil'
 
 module Tescha
   class Set
@@ -39,6 +40,10 @@ module Tescha
 
     def assert_not object, method, *args
       @current_test.append_result_of Tescha::Assertion::Negative.new(object, method, args)
+    end
+
+    def assert_nil object, method, *args
+      @current_test.append_result_of Tescha::Assertion::Nil.new(object, method, args)
     end
 
   end
