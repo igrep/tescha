@@ -26,13 +26,11 @@ if __FILE__ == $PROGRAM_NAME
 
     test "I judge whether the given expression returns false" do
       assert_not 1, :zero?
+      assert_false 1, :zero?
     end
 
-    test "I judge whether the given expression returns a falsy." do
+    test "I judge whether the given expression returns a falsy or just nil." do
       assert_not [], :first
-    end
-
-    test "I judge whether the given expression returns nil." do
       assert_nil [], :first
     end
 
