@@ -15,10 +15,18 @@ module Tescha
       raise "Unrecognized option(s): #{opts.keys.inspect}" unless opts.empty?
     end
 
-    def statistical_message
-      message = "#{@result_counter.tests.length} tests, #{@result_counter.failures.length} failures"
-      message << ", #{@result_counter.skips.length} skipped" unless @result_counter.skips.empty?
-      message << '.'
+    def write_statistical_message
+      @output.write "#{@result_counter.tests.length} tests, #{@result_counter.failures.length} failures"
+      @output.write ", #{@result_counter.skips.length} skipped" unless @result_counter.skips.empty?
+      @output.write ".\n"
+    end
+
+    def write_results_of tests
+      tests.each do|test|
+        test.result_messages.each do|message|
+          @output.write message
+        end
+      end
     end
 
     def after_test test
@@ -31,16 +39,9 @@ module Tescha
     end
 
     def after_execution
-      @result_counter.failures.each do|test|
-        test.result_messages.each do|message|
-          @output.write message
-        end
-      end
-      @result_counter.skips.each do|test|
-        test.result_messages.each do|message|
-          @output.write message
-        end
-      end
+      write_results_of @result_counter.failures
+      write_results_of @result_counter.skips
+      write_statistical_message
     end
 
   end
@@ -49,6 +50,7 @@ end
 if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   require 'tescha/meta_test'
   require 'tescha/test'
+  require 'tescha/result_counter'
   require 'tescha/assertion/positive'
   require 'pp'
   include Tescha
