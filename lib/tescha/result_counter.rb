@@ -32,160 +32,64 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
 
   puts "\n---------------------------#initialize"
 
-  puts 'An initial result lister'
+  puts 'An initial result counter'
   instance_in_test = ResultCounter.new
 
   MetaTest.test(
-    "  its statistical_message returns the count of tests and failed tests.",
-    ( actual = instance_in_test.statistical_message ) == ( expected = "0 tests, 0 failures." ),
+    "  it has no tests.",
+    ( actual = instance_in_test.tests.size ) == ( expected = 0 ),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
   MetaTest.test(
-    "  its result_messages returns an empty thing.",
-    ( actual = instance_in_test.result_messages ).empty?,
-      "The actual value: #{actual.inspect} is not empty."
+    "  it has no failures.",
+    ( actual = instance_in_test.failures.size ) == ( expected = 0 ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
   )
 
   MetaTest.test(
-    "  its last_result is nil.",
-    ( actual = instance_in_test.last_result ).nil?,
-      "The actual value: #{actual.inspect} is not nil."
+    "  it has no skips.",
+    ( actual = instance_in_test.skips.size ) == ( expected = 0 ),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
   )
 
-  MetaTest.test(
-    "  its last_result_sign_in_progress is nil.",
-    ( actual = instance_in_test.last_result_sign_in_progress ).nil?,
-      "The actual value: #{actual.inspect} is not nil."
-  )
+  puts "\n---------------------------#add_test"
+  puts 'given some tests.'
 
-  puts "\n---------------------------#append_test"
-  puts 'given some tests with assertions including failed ones.'
+  successful_test1 = Test.new 'first successful test in add_test'
+  successful_test1.append_result_of Assertion::Positive.new nil, :nil?
 
-  successful_test = Test.new 'a successful test in append_test'
-  successful_test.append_result_of Assertion::Positive.new nil, :nil?
+  successful_test2 = Test.new 'second successful test in add_test'
+  successful_test2.append_result_of Assertion::Positive.new nil, :nil?
 
-  failed_test1 = Test.new 'first failed test in append_test'
+  failed_test1 = Test.new 'first failed test in add_test'
   failed_test1.append_result_of Assertion::Positive.new 0, :nil?
 
-  failed_test2 = Test.new 'second failed test in append_test'
+  failed_test2 = Test.new 'second failed test in add_test'
   failed_test2.append_result_of Assertion::Positive.new 0, :nil?
 
+  skipped_test1 = Test.new 'first skipped test in add_test'
+  skipped_test2 = Test.new 'second skipped test in add_test'
+
+  expected_tests = [
+    successful_test1,
+    successful_test2,
+    failed_test1,
+    failed_test2,
+    skipped_test1,
+    skipped_test2,
+  ].shuffle!
   instance_in_test = ResultCounter.new
-  instance_in_test.append_test successful_test
-  instance_in_test.append_test failed_test1
-  instance_in_test.append_test failed_test2
+  expected_tests.each do|test|
+    instance_in_test.add_test test
+  end
 
   MetaTest.test(
-    "  its statistical_message returns the count of tests and failed tests.",
-    ( actual = instance_in_test.statistical_message ) == ( expected = "3 tests, 2 failures." ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its result_messages returns failed tests' result_messages.",
-    ( actual = instance_in_test.result_messages ) ==
-      ( expected = failed_test1.result_messages + failed_test2.result_messages ),
-      "The expected value:\n#{expected.pretty_inspect}\n" \
-      "The actual value:\n#{actual.pretty_inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result is FAILED.",
-    ( actual = instance_in_test.last_result ) == ( expected = Test::FAILED ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result_sign_in_progress is 'F'.",
-    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = 'F' ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  puts "\n-------------------------------------------"
-  puts 'given some tests with successful assertions and skipped tests.'
-
-  successful_test1 = Test.new 'first successful test in append_test'
-  successful_test1.append_result_of Assertion::Positive.new nil, :nil?
-  successful_test2 = Test.new 'second successful test in append_test'
-  successful_test2.append_result_of Assertion::Positive.new nil, :nil?
-  skipped_test1 = Test.new 'first skipped test in append_test'
-  skipped_test2 = Test.new 'second skipped test in append_test'
-
-  instance_in_test = ResultCounter.new
-  instance_in_test.append_test successful_test1
-  instance_in_test.append_test successful_test2
-  instance_in_test.append_test skipped_test1
-  instance_in_test.append_test skipped_test2
-
-  MetaTest.test(
-    "  its statistical_message returns the count of tests and skipped tests.",
-    ( actual = instance_in_test.statistical_message ) == ( expected = "4 tests, 0 failures, 2 skipped." ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its result_messages returns skipped tests' result_messages.",
-    ( actual = instance_in_test.result_messages ) ==
-      ( expected = skipped_test1.result_messages + skipped_test2.result_messages ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result is SKIPPED.",
-    ( actual = instance_in_test.last_result ) == ( expected = Test::SKIPPED ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result_sign_in_progress is '*'.",
-    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = '*' ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  puts "\n-------------------------------------------"
-  puts 'given some tests with successful assertions.'
-
-  successful_test1 = Test.new 'first successful test in append_test'
-  successful_test1.append_result_of Assertion::Positive.new nil, :nil?
-  successful_test2 = Test.new 'second successful test in append_test'
-  successful_test2.append_result_of Assertion::Positive.new nil, :nil?
-
-  instance_in_test = ResultCounter.new
-  instance_in_test.append_test successful_test1
-  instance_in_test.append_test successful_test2
-
-  MetaTest.test(
-    "  its statistical_message returns the count of tests",
-    ( actual = instance_in_test.statistical_message ) == ( expected = "2 tests, 0 failures." ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its result_messages returns an empty thing.",
-    ( actual = instance_in_test.result_messages ).empty?,
-      "The actual value: #{actual.inspect} is not empty."
-  )
-
-  MetaTest.test(
-    "  its last_result is SUCCESSFUL.",
-    ( actual = instance_in_test.last_result ) == ( expected = Test::SUCCESSFUL ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result_sign_in_progress is '.'.",
-    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = '.' ),
+    "  it tests are all added tests ordered as added.",
+    (actual = instance_in_test.tests) == (expected_tests),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
