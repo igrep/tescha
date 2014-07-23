@@ -94,4 +94,26 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
       "The actual value:   #{actual.inspect}"
   )
 
+  expected_failures = expected_tests.select do|test|
+    test.equal?(failed_test1) || test.equal?(failed_test2)
+  end
+
+  MetaTest.test(
+    "  its failures are all added failed tests ordered as added.",
+    (actual = instance_in_test.failures) == (expected_failures),
+      "The expected value: #{expected_failures.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  expected_skips = expected_tests.select do|test|
+    test.equal?(skipped_test1) || test.equal?(skipped_test2)
+  end
+
+  MetaTest.test(
+    "  its skips are all added skipped tests ordered as added.",
+    (actual = instance_in_test.skips) == (expected_skips),
+      "The expected value: #{expected_skips.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
 end
