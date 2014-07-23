@@ -88,9 +88,9 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   end
 
   MetaTest.test(
-    "  it tests are all added tests ordered as added.",
+    "  its tests are all added tests ordered as added.",
     (actual = instance_in_test.tests) == (expected_tests),
-      "The expected value: #{expected.inspect}\n" \
+      "The expected value: #{expected_tests.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
