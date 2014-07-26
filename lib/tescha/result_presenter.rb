@@ -73,18 +73,6 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
       "The actual value: #{actual.inspect} is not empty."
   )
 
-  MetaTest.test(
-    "  its last_result is nil.",
-    ( actual = instance_in_test.last_result ).nil?,
-      "The actual value: #{actual.inspect} is not nil."
-  )
-
-  MetaTest.test(
-    "  its last_result_sign_in_progress is nil.",
-    ( actual = instance_in_test.last_result_sign_in_progress ).nil?,
-      "The actual value: #{actual.inspect} is not nil."
-  )
-
   puts "\n---------------------------#append_test"
   puts 'given some tests with assertions including failed ones.'
 
@@ -115,20 +103,6 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
       ( expected = failed_test1.result_messages + failed_test2.result_messages ),
       "The expected value:\n#{expected.pretty_inspect}\n" \
       "The actual value:\n#{actual.pretty_inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result is FAILED.",
-    ( actual = instance_in_test.last_result ) == ( expected = Test::FAILED ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result_sign_in_progress is 'F'.",
-    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = 'F' ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
   )
 
   puts "\n-------------------------------------------"
@@ -162,20 +136,6 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
       "The actual value:   #{actual.inspect}"
   )
 
-  MetaTest.test(
-    "  its last_result is SKIPPED.",
-    ( actual = instance_in_test.last_result ) == ( expected = Test::SKIPPED ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result_sign_in_progress is '*'.",
-    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = '*' ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
   puts "\n-------------------------------------------"
   puts 'given some tests with successful assertions.'
 
@@ -199,20 +159,6 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
     "  its result_messages returns an empty thing.",
     ( actual = instance_in_test.result_messages ).empty?,
       "The actual value: #{actual.inspect} is not empty."
-  )
-
-  MetaTest.test(
-    "  its last_result is SUCCESSFUL.",
-    ( actual = instance_in_test.last_result ) == ( expected = Test::SUCCESSFUL ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
-  )
-
-  MetaTest.test(
-    "  its last_result_sign_in_progress is '.'.",
-    ( actual = instance_in_test.last_result_sign_in_progress ) == ( expected = '.' ),
-      "The expected value: #{expected.inspect}\n" \
-      "The actual value:   #{actual.inspect}"
   )
 
 end
