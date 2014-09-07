@@ -10,14 +10,18 @@ module Tescha
       @skips = []
     end
 
-    def add_test test
+    def on_success test
       @tests << test
-      case test.result
-      when Test::FAILED
-        @failures << test
-      when Test::SKIPPED
-        @skips << test
-      end
+    end
+
+    def on_failure test
+      @tests << test
+      @failures << test
+    end
+
+    def on_skip test
+      @tests << test
+      @skips << test
     end
 
   end
@@ -33,31 +37,33 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   puts "\n---------------------------#initialize"
 
   puts 'An initial result counter'
-  instance_in_test = ResultCounter.new
+  subject = ResultCounter.new
 
   MetaTest.test(
     "  it has no tests.",
-    ( actual = instance_in_test.tests.size ) == ( expected = 0 ),
+    (actual = subject.tests) == (expected = []),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
   MetaTest.test(
     "  it has no failures.",
-    ( actual = instance_in_test.failures.size ) == ( expected = 0 ),
+    (actual = subject.failures) == (expected = []),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
   MetaTest.test(
     "  it has no skips.",
-    ( actual = instance_in_test.skips.size ) == ( expected = 0 ),
+    (actual = subject.skips) == (expected = []),
       "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
-  puts "\n---------------------------#add_test"
-  puts 'given some tests.'
+  puts "\n---------------------------#on_success"
+  puts 'given some successful tests.'
+
+  subject = ResultCounter.new
 
   successful_test1 = Test.new 'first successful test in add_test'
   successful_test1.append_result_of Assertion::Positive.new nil, :nil?
@@ -65,54 +71,94 @@ if Tescha.ready? || __FILE__ == $PROGRAM_NAME
   successful_test2 = Test.new 'second successful test in add_test'
   successful_test2.append_result_of Assertion::Positive.new nil, :nil?
 
+  subject.on_success successful_test1
+  subject.on_success successful_test2
+
+  MetaTest.test(
+    "  its tests are all added tests ordered as added.",
+    (actual = subject.tests) == (expected = [successful_test1, successful_test2]),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  it has no failures.",
+    (actual = subject.failures) == (expected = []),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  it has no skips.",
+    (actual = subject.skips) == (expected = []),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  puts "\n---------------------------#on_failure"
+  puts 'given some failed tests.'
+
+  subject = ResultCounter.new
+
   failed_test1 = Test.new 'first failed test in add_test'
   failed_test1.append_result_of Assertion::Positive.new 0, :nil?
 
   failed_test2 = Test.new 'second failed test in add_test'
   failed_test2.append_result_of Assertion::Positive.new 0, :nil?
 
-  skipped_test1 = Test.new 'first skipped test in add_test'
-  skipped_test2 = Test.new 'second skipped test in add_test'
-
-  expected_tests = [
-    successful_test1,
-    successful_test2,
-    failed_test1,
-    failed_test2,
-    skipped_test1,
-    skipped_test2,
-  ].shuffle!
-  instance_in_test = ResultCounter.new
-  expected_tests.each do|test|
-    instance_in_test.add_test test
-  end
+  subject.on_failure failed_test1
+  subject.on_failure failed_test2
 
   MetaTest.test(
     "  its tests are all added tests ordered as added.",
-    (actual = instance_in_test.tests) == (expected_tests),
-      "The expected value: #{expected_tests.inspect}\n" \
+    (actual = subject.tests) == (expected = [failed_test1, failed_test2]),
+      "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
-  expected_failures = expected_tests.select do|test|
-    test.equal?(failed_test1) || test.equal?(failed_test2)
-  end
-
   MetaTest.test(
-    "  its failures are all added failed tests ordered as added.",
-    (actual = instance_in_test.failures) == (expected_failures),
-      "The expected value: #{expected_failures.inspect}\n" \
+    "  its failures are all added tests ordered as added.",
+    (actual = subject.failures) == (expected = [failed_test1, failed_test2]),
+      "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
-  expected_skips = expected_tests.select do|test|
-    test.equal?(skipped_test1) || test.equal?(skipped_test2)
-  end
+  MetaTest.test(
+    "  it has no skips.",
+    (actual = subject.skips) == (expected = []),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  puts "\n---------------------------#on_skip"
+  puts 'given some skipped tests.'
+
+  subject = ResultCounter.new
+
+  skipped_test1 = Test.new 'first skipped test in add_test'
+  skipped_test2 = Test.new 'second skipped test in add_test'
+
+  subject.on_skip skipped_test1
+  subject.on_skip skipped_test2
 
   MetaTest.test(
-    "  its skips are all added skipped tests ordered as added.",
-    (actual = instance_in_test.skips) == (expected_skips),
-      "The expected value: #{expected_skips.inspect}\n" \
+    "  its tests are all added tests ordered as added.",
+    (actual = subject.tests) == (expected = [skipped_test1, skipped_test2]),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  it has no failures.",
+    (actual = subject.failures) == (expected = []),
+      "The expected value: #{expected.inspect}\n" \
+      "The actual value:   #{actual.inspect}"
+  )
+
+  MetaTest.test(
+    "  its skips are all added skips ordered as added.",
+    (actual = subject.tests) == (expected = [skipped_test1, skipped_test2]),
+      "The expected value: #{expected.inspect}\n" \
       "The actual value:   #{actual.inspect}"
   )
 
